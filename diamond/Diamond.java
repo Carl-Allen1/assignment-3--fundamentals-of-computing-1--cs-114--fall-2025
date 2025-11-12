@@ -3,68 +3,42 @@ import java.util.Scanner;
 public class Diamond {
   public static void main(String[] args) {
     int diamondSize;
-    int halfDiamondSize;
-    int numSpaces;
-    int numStars = 1;
     boolean isEven;
+    int starChange = 2;
+    StringBuilder finalStringBuilder = new StringBuilder();
+
+    final String EVEN_STRING = " *";
+    final String ODD_STRING = "*";
 
     Scanner input = new Scanner(System.in);
 
     System.out.print("Enter a number: ");
     diamondSize = input.nextInt();
 
-    halfDiamondSize = diamondSize / 2;
-
     isEven = diamondSize % 2 == 0;
 
-    numSpaces = isEven ? diamondSize : halfDiamondSize;
+    for(int i = 0, numStars = 1; numStars > 0; i++, numStars += starChange) {
+      if(i == 1 && isEven) { numStars--; }
 
-    for(int i = 0; i < diamondSize - halfDiamondSize + (isEven ? 1 : 0); i++) {
+      if(numStars == diamondSize) { starChange *= -1; }
+
+      int numSpaces = diamondSize - numStars;
+      numSpaces = !isEven ? numSpaces / 2 : numSpaces;
+
       for(int j = 0; j < numSpaces; j++) {
-        System.out.print(" ");
+        finalStringBuilder.append(" ");
       }
-
-      if(i == 0 && isEven) {
-        System.out.print("\b");
-      }
-
-      numSpaces -= isEven ? 2 : 1;
 
       for(int j = 0; j < numStars; j++) {
-        System.out.print(isEven ? " *" : "*");
+        finalStringBuilder.append(isEven ? EVEN_STRING : ODD_STRING);
       }
 
-      if(i == 0 && isEven) {
-        numStars++;
-      } else {
-        numStars += 2;
-      }
+      finalStringBuilder.append("\n");
 
-      System.out.println();
+      if(i == (diamondSize - 1) && isEven) { numStars++; }
     }
 
-    numStars -= 4;
-    numSpaces = isEven ? 2 : 1;
-
-    for(int i = 0; i < halfDiamondSize; i++) {
-      for(int j = 0; j < numSpaces; j++) {
-        System.out.print(" ");
-      }
-
-      numSpaces += isEven ? 2 : 1;
-
-      for(int j = 0; j < numStars; j++) {
-        System.out.print(isEven && i < (halfDiamondSize - 1) ? " *" : "*");
-      }
-
-      if(i == ((halfDiamondSize) - 2) && isEven) {
-        numStars--;
-      } else {
-        numStars -= 2;
-      }
-
-      System.out.println();
-    }
+    System.out.println(finalStringBuilder.toString());
 
     input.close();
   }
